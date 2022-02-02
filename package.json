@@ -1,0 +1,17 @@
+{
+  "scripts": {
+    "start": "node-dev server.js"
+  },
+  "name": "saraha",
+  "version": "1.0.0",
+  "description": "this is website smilir to saraha.com",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "mongoose": "^6.1.10",
+    "node-dev": "^7.1.0"
+  }
+}
