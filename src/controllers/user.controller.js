@@ -5,7 +5,9 @@ const register = async (req, res) => {
   const user = await userModel.findOne({ email })
 
   if (user) {
-    return res.status(401).send({ message: 'Email already token !' })
+    return res
+      .status(201)
+      .json({ data: false, message: 'Email already token !' })
   }
 
   if (password.trim() === '' || name.trim() === '')
@@ -20,6 +22,7 @@ const register = async (req, res) => {
 
     await newUser.save()
     res.status(201).json({
+      data: true,
       message: 'succes the account is created successfully ^^',
     })
   } catch (err) {
@@ -33,12 +36,34 @@ const login = async (req, res) => {
     const user = await userModel.findOne({ email })
     if (user && (await user.matchPassword(password))) {
       return res.json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
+        data: {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+        },
+        message: 'success Login',
       })
     } else {
-      res.send('Invalid email or Password')
+      res.send({
+        data: null,
+        message: 'Invalid email or Password',
+      })
+    }
+  } catch (err) {
+    res.send(err)
+  }
+}
+const getProfile = async (req, res) => {
+  const _id = req.params.id
+  try {
+    const user = await userModel.findOne({ _id })
+    if (user) {
+      return res.json({
+        data: {
+          _id: user._id,
+          name: user.name,
+        },
+      })
     }
   } catch (err) {
     res.send(err)
@@ -47,4 +72,5 @@ const login = async (req, res) => {
 module.exports = {
   register,
   login,
+  getProfile,
 }

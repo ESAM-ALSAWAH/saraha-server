@@ -1,11 +1,11 @@
 const messageModel = require('../models/message.model')
-
+var moment = require('moment')
 const createmessage = async (req, res) => {
-  const { description, date, userID } = req.body
+  const { description, userID } = req.body
   try {
     const newMessage = new messageModel({
       description,
-      date,
+      date: moment().format('MMMM Do YYYY, h:mm:ss a'),
       userID,
     })
     await newMessage.save()
@@ -14,13 +14,13 @@ const createmessage = async (req, res) => {
       message: 'Message has been sent ^^',
     })
   } catch (err) {
-    return res.json({ message: 'error !!' })
+    return res.status(401).json({ message: 'error !!' })
   }
 }
 const getAllmessage = async (req, res, next) => {
-  const { userID } = req.body
+  const userID = req.params.UserId
   const message = await messageModel.find({ userID })
-  console.log(message)
+  res.json({ data: message })
 }
 const DeleteMessage = async (req, res) => {
   const _id = req.params.id
