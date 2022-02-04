@@ -6,6 +6,6 @@ const {
   DeleteMessage,
 } = require('../controllers/message.controller')
 router.post('/message/create', createmessage)
-router.get('/message/getAll/:UserId', getAllmessage)
+router.get('/message/getAll', getAllmessage)
 router.delete('/message/:id', DeleteMessage)
 module.exports = router

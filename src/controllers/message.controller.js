@@ -1,5 +1,6 @@
 const messageModel = require('../models/message.model')
-var moment = require('moment')
+const moment = require('moment')
+const getInfo = require('../utils/getInfo')
 const createmessage = async (req, res) => {
   const { description, userID } = req.body
   try {
@@ -18,9 +19,14 @@ const createmessage = async (req, res) => {
   }
 }
 const getAllmessage = async (req, res, next) => {
-  const userID = req.params.UserId
-  const message = await messageModel.find({ userID })
-  res.json({ data: message })
+  const token = req.header('authorization')
+  const userID = getInfo(token)
+
+  console.log(userID)
+  try {
+    const message = await messageModel.find({ userID })
+    res.json({ data: message })
+  } catch {}
 }
 const DeleteMessage = async (req, res) => {
   const _id = req.params.id

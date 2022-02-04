@@ -1,5 +1,6 @@
 const userModel = require('../models/user.model')
 const Exception = require('../exception/RigestryException')
+const generateToken = require('../utils/generateToken')
 const register = async (req, res) => {
   const { name, email, password } = req.body
   const user = await userModel.findOne({ email })
@@ -35,12 +36,9 @@ const login = async (req, res) => {
     const { email, password } = req.body
     const user = await userModel.findOne({ email })
     if (user && (await user.matchPassword(password))) {
-      return res.json({
-        data: {
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-        },
+      return res.send({
+        data: generateToken(user._id),
+
         message: 'success Login',
       })
     } else {
